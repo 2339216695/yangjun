@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>2048</title>
+	<link rel="stylesheet" type="text/css" href="2048.css">
+</head>
+<body>
+	<div class="table">
+		<a onclick="action()" style="display:block;">点击开始游戏</a>
+		<a onclick="location.reload()"style="display:none;"></a>
+	</div>
+	<div class="bottom">总分是:<span>0000</span>&nbsp; &nbsp; 倒计时:<span>0000</span></div>
+</body>
+<script type="text/javascript">
+	var a1=document.querySelectorAll("a")[1];
+	var change=0;
+	function action(){
+		change=1;
+		var a=document.querySelectorAll("a")[0];
+		a.style.display="none";	
+		//计时器
+		var time=300;
+		timer=setInterval(function(){
+		 		time--;
+		 		document.querySelectorAll("span")[1].innerHTML=time;
+		 		if(time==0){
+		 			game();
+		 			clearInterval(timer);
+		 			timer=null;
+		 		}
+		 	},1000);
+	}
+	//添加页面布局
+	var div=document.querySelectorAll("div")[0];
+	var ul=document.createElement("ul");
+	var frag=document.createDocumentFragment();
+	for(var i=0;i<16;i++){
+		var li=document.createElement("li");
+		frag.appendChild(li);
+	}
+	ul.appendChild(frag);
+	div.appendChild(ul);
+	//出现两个随机li标签
+	var lis=document.querySelectorAll("li");
+	//随机函数
+	function random(){
+		//表示页面上随机出现的位置
+		var n=parseInt(Math.random()*(16));
+		//页面出现的随机数
+		var ran=Math.random();
+			while(1){
+				if(ran<0.8){//“2”出现的概率为80%
+					if(lis[n].innerHTML==""){
+						lis[n].innerHTML=2;
+						break;
+					}else{
+						n=parseInt(Math.random()*(16));	
+					}
+				}else{//“4”出现的概率为20%
+					if(lis[n].innerHTML==""){
+						lis[n].innerHTML=4;
+						break;
+					}else{
+						n=parseInt(Math.random()*(16));	
+					}
+				}
+			}		
+	}
+	function over(){
+		for(var i=0,textNum=0;i<16;i++){
+    		if(lis[i].innerHTML!=""){
+    			textNum++;
+    		}
+    	}
+    	(textNum!=16)?random():"";
+	}
+	random();
+	random();
+	bgcolor();
+	//背景颜色
+	function bgcolor(){
+		for(var i=0;i<lis.length;i++){
+			if(lis[i].innerHTML==""){
+				lis[i].style.backgroundColor="#ccc";
+			}else if(lis[i].innerHTML==2){
+				lis[i].style.backgroundColor="yellow";
+			}else if(lis[i].innerHTML==4){
+				lis[i].style.backgroundColor="#fff";
+			}else if(lis[i].innerHTML==8){
+				lis[i].style.backgroundColor="red";
+			}else if(lis[i].innerHTML==16){
+				lis[i].style.backgroundColor="blue";
+			}else if(lis[i].innerHTML==32){
+				lis[i].style.backgroundColor="green";
+			}else if(lis[i].innerHTML==64){
+				lis[i].style.backgroundColor="skyblue";
+			}else if(lis[i].innerHTML==128){
+				lis[i].style.backgroundColor="pink";
+			}else if(lis[i].innerHTML==256){
+				lis[i].style.backgroundColor="purple";
+			}else if(lis[i].innerHTML==512){
+				lis[i].style.backgroundColor="orange";
+			}else if(lis[i].innerHTML==1024){
+				lis[i].style.backgroundColor="lightblue";
+			}else if(lis[i].innerHTML==2048){
+				lis[i].style.backgroundColor="yellowgreen";
+			}else if(lis[i].innerHTML==4096){
+				lis[i].style.backgroundColor="brown";
+			}
+		}	
+	}
+	var point=0;
+	//控制键盘
+	function keyup(j,num){
+	    	if(lis[j-num].innerHTML==""){
+				lis[j-num].innerHTML=lis[j].innerHTML;
+				lis[j].innerHTML="";
+			}else if(lis[j-num].innerHTML==lis[j].innerHTML){
+			   	lis[j-num].innerHTML*=2;
+			   	point+=parseInt(lis[j].innerHTML);
+		   		lis[j].innerHTML=""; 	
+	   	    }	
+	}
+	window.onkeydown=function (){
+		if(change==1){//当changge发生改变的时候，才能触发键盘事件
+			var e = window.event || arguments[0];
+			if(window.event){       // IE
+				keynum = e.keyCode;
+			}else if(e.which){       // Netscape/Firefox/Opera
+				keynum = e.which;
+			}
+		}
+	    if(keynum==87||keynum==38||keynum==104){//上
+		  for(var a=4,j=0;a<16;a++){
+			    j=a;
+	    		while(j>=4){
+			   	    keyup(j,4);
+			   	   j=j-4;
+			   	} 
+		    }
+	    }else if(keynum==83||keynum==40||keynum==98){//下
+	    	for(var a=11,j=0;a>=0;a--){
+			    j=a;
+	    		while(j<=11){
+	    			 keyup(j,-4);
+			   	   j=j+4;
+			   	} 
+		    }	
+	    }else  if(keynum==65||keynum==37||keynum==100){//左
+	    	for(var a=0,j=0;a<16;a++){
+			    j=a;
+	    		while(j){
+		    	    (j>0&&j<4)&& keyup(j,1);
+				    (j>4&&j<8)&& keyup(j,1);
+				    (j>8&&j<12)&& keyup(j,1);
+				    (j>12&&j<16)&& keyup(j,1);
+			   	   j=j-1;
+			   	}
+		    } 
+	    }else if(keynum==68||keynum==39||keynum==102){//右
+	    	for(var a=16,j=0;a>=0;a--){
+			    j=a;
+			    while(j<15){
+				    (j>=0&&j<3)&& keyup(j,-1);
+				    (j>=4&&j<7)&& keyup(j,-1);
+				    (j>=8&&j<11)&& keyup(j,-1);
+				    (j>=12&&j<15)&& keyup(j,-1);
+				    j+=1;
+			    }	
+		    } // 
+			
+	    }
+	    //获取分数 
+	    over();
+		bgcolor();
+	    document.querySelectorAll("span")[0].innerHTML=point+"分";
+	    eding();    
+	} 
+	//游戏结束
+	function eding(){
+	 for(var i=0,j=0;i<16;i++){
+		(lis[i].innerHTML!="")&&(j++);	
+	}
+	if(j==16){(lis[0].innerHTML!=lis[1].innerHTML&&lis[0].innerHTML!=lis[4].innerHTML &&  lis[3].innerHTML!=lis[2].innerHTML&&lis[3].innerHTML!=lis[7].innerHTML&& lis[12].innerHTML!=lis[8].innerHTML&&lis[12].innerHTML!=lis[13].innerHTML &&  lis[15].innerHTML!=lis[14].innerHTML&&lis[15].innerHTML!=lis[11].innerHTML && lis[4].innerHTML!=lis[8].innerHTML&&lis[4].innerHTML!=lis[5].innerHTML && lis[8].innerHTML!=lis[9].innerHTML && lis[1].innerHTML!=lis[2].innerHTML&&lis[1].innerHTML!=lis[5].innerHTML &&lis[2].innerHTML!=lis[6].innerHTML&&lis[7].innerHTML!=lis[11].innerHTML&&lis[7].innerHTML!=lis[6].innerHTML&&lis[11].innerHTML!=lis[10].innerHTML&&lis[13].innerHTML!=lis[14].innerHTML&&lis[13].innerHTML!=lis[9].innerHTML&&lis[14].innerHTML!=lis[10].innerHTML &&lis[5].innerHTML!=lis[6].innerHTML&&lis[5].innerHTML!=lis[9].innerHTML &&lis[6].innerHTML!=lis[10].innerHTML&&lis[9].innerHTML!=lis[10].innerHTML)&&(gameOver());	
+		}	
+	}
+	function gameOver(){
+		a1.innerHTML="游戏结束，本次得分"+point+"分";
+		a1.style.display="block";
+		clearInterval(timer);
+		 			timer=null;
+	}
+	function game(){
+		a1.innerHTML="时间到，游戏结束";
+		a1.style.display="block";
+		a1.style.color="red";
+	}
+</script>
+</html>
