@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas">
+    您的浏览器不支持canvas标签
+</canvas>
+</body>
+<script>
+    var canvas=document.getElementById("canvas");
+    canvas.width=400;
+    canvas.height=610;
+    canvas.style.border="1px solid #569812";
+    canvas.style.display="block";
+    canvas.style.margin="0 auto";
+    var cnt=canvas.getContext("2d");
+
+
+
+    const START = 0;//欢迎阶段
+    const STARTTING = 1;//过渡阶段
+    const RUNNING = 2;//运行阶段
+    const PAUSED = 3;//暂停阶段
+    const GAMEOVER = 4;//结束阶段
+
+    const WIDTH = canvas.width;
+    const HEIGHT = canvas.height;
+
+    //设定好当前的状态
+    var state = START;
+
+    /****************************************************************/
+    //游戏背景
+    var bg = new Image();
+    bg.src = "./images/background.png";
+    BGROUND = {
+        imgs:bg,
+        width:480,
+        height:852,
+    }
+    function gstart(option){
+        this.imgs = option.imgs;
+        this.width = option.width;
+        this.height = option.height;
+        this.y1=0;
+        this.y2=0-this.height;
+        //将绘制功能单独封装
+        this.draw = function() {
+            cnt.drawImage(this.imgs, 0, this.y1);
+            cnt.drawImage(this.imgs, 0, this.y2);
+			cnt.font="18px '微软雅黑'"
+            cnt.fillText("得分："+num,40,40);
+            cnt.fillText("生命值："+sum,300,40);
+            
+        };
+        //将动画功能单独封装
+        this.step = function(){
+            this.y1++;this.y2++;
+            if(this.y1>this.height){
+                this.y1 = -this.height
+            }
+            if(this.y2>this.height){
+                this.y2 = -this.height
+            }
+        };
+    }
+    var bgstart = new gstart(BGROUND);
+    var logo = new Image();
+    logo.src = "./images/start.png";
+
+    canvas.onclick=function() {
+        if (state == START) {
+            state = STARTTING;
+        }
+    }
+    /****************************************************************/
+    //遍历图片数组
+    function array(ary){
+        for(var i= 0,imgs1=[];i<ary.length;i++){
+            var load=new Image();
+            load.src="./images/"+ary[i];
+            imgs1.push(load);
+        }
+        return imgs1;
+    }
+    /****************************************************************/
+    //预加载
+    var loading_imgs=["game_loading1.png","game_loading2.png","game_loading3.png","game_loading4.png"];
+    var imgs=array(loading_imgs);
+    var loading={
+        imgs:imgs,
+        width:186,
+        height:38,
+        y: 610-38,
+        index:0,
+        time:0,
+    }
+    function Gloading(option){
+        this.imgs=option.imgs;
+        this.width=option.width;
+        this.height=option.height;
+        this.y=option.y;
+        this.index=option.index;
+        this.time=option.time;
+        this.draw=function(){
+            cnt.drawImage(this.imgs[this.index],0,this.y,this.width,this.height)
+        }
+        this.step=function(){
+            this.time++;
+            if(this.time>1){
+                this.index++;
+                this.time=0;
+                if(this.index==this.imgs.length){
+                    state=RUNNING;
+                }
+            }
+        }
+    }
+    var gload = new Gloading(loading);
+
+
+    /**************************************************************/
+    //我方飞机
+    var hero_imgs=["hero1.png","hero2.png","hero_blowup_n1.png","hero_blowup_n2.png","hero_blowup_n3.png","hero_blowup_n4.png"];
+    var ims=array(hero_imgs);
+    var GHero={
+        imgs:ims,
+        width:99,
+        height:124,
+        x:canvas.width/2-99/2,
+        y:canvas.height-124,
+        index:0,
+        time:0,
+        bullets_num:0,
+    }
+    function Ghero(option){
+        this.imgs=option.imgs;
+        this.width=option.width;
+        this.height=option.height;
+        this.y=option.y;
+        this.x=option.x;
+        this.time=option.time;
+        this.index=option.index;
+        this.draw=function(){
+            cnt.drawImage(this.imgs[this.index],this.x,this.y);
+        }
+        this.step=function(){
+                this.index++;
+                this.index=this.index%2;
+        }
+        this.fire=function(bullets){
+            if(this.time%25==0){
+                var bullet = new Gbullet(gbullet);
+                bullet.x = this.x+this.width/2-9/2;
+                bullet.y = this.y;
+                bullets[bullets.length] = bullet;
+            }
+            this.time++;
+        }
+        this.h_down=function(){
+            this.time++;
+            if(this.time%1==0)
+                this.index++;
+//            if(this.index>this.imgs.length){
+//              // state=GAMEOVER;
+//            }
+        }
+    }
+    var ghreo = new Ghero(GHero);
+    canvas.onmousemove = function(event){
+        ghreo.x = event.offsetX-ghreo.width/2;
+        ghreo.y = event.offsetY-ghreo.height/2;
+    }
+//暂停阶段
+    var nor=new Image();
+    nor.src="./images/game_pause_nor.png";
+    canvas.onmouseout=function(){
+        if(state==RUNNING){
+           state=PAUSED;
+           //  clearInterval(timer);
+
+        }
+    }
+    canvas.onmouseover=function(){
+        if(state==PAUSED){
+          state=RUNNING;
+           //   setInterval(timer,10);
+        }
+    }
+    /**************************************************************/
+    //子弹
+    var loads=new Image();
+    loads.src="./images/bullet.png";
+    var gbullet={
+        imgs:loads,
+        width:9,
+        height:21,
+        x:ghreo.x-9/2+9,
+        y:ghreo.y-20,
+        index:0,
+        destroy_flag:0,
+    }
+    function Gbullet(option){
+        this.imgs=option.imgs;
+        this.width=option.width;
+        this.height=option.height;
+        this.x=option.x;
+        this.y=option.y;
+        this.index=option.index;
+        this.destroy_flag=option.destroy_flag;
+        this.draw=function(){
+            cnt.drawImage(this.imgs,this.x,this.y);
+        }
+        this.step=function(){
+            this.y-=3;
+            if(this.y<(0-this.height)){
+                this.destroy_flag = 1;
+            }
+        }
+    }
+    var gbullets=new Gbullet(gbullet);
+    //所有子弹的动画效果
+    var imgs_bullet=[];
+    function gbullet_animate(){
+        for(var i=0;i<imgs_bullet.length;i++){
+            imgs_bullet[i].draw();
+            imgs_bullet[i].step();
+        }
+    }
+    //所有子弹的边界判定
+    function gbullet_destroy(){
+        for(var i=0;i<imgs_bullet.length;i++){
+            if(imgs_bullet[i].destroy_flag == 1) {
+                imgs_bullet.splice(i, 1);
+            }
+        }
+    }
+    /*************************************************************/
+    //敌方飞机
+    var min_img=["enemy1.png","enemy1_down1.png","enemy1_down2.png","enemy1_down3.png","enemy1_down4.png"];
+    var minimgs=array(min_img);
+
+   //中形飞机
+    var hit_img=["enemy2.png","enemy2_down1.png","enemy2_down2.png","enemy2_down3.png","enemy2_down4.png"];
+    var hitimgs=array(hit_img);
+
+   //大飞机
+    var  enemys = [];
+    var max_img=["enemy3_hit.png","enemy3_down1.png","enemy3_down2.png","enemy3_down3.png","enemy3_down4.png","enemy3_down5.png","enemy3_down6.png"];
+    var maximgs=array(max_img);
+
+    var genemy={
+        imgs1:minimgs,
+        width:51,
+        height:57,
+        destroy_flag:0,
+        index:0,
+        is_down:0,
+
+    }
+    function Genemy(option){
+        this.imgs=option.imgs1;
+        this.width=option.width;
+        this.height=option.height;
+        this.destroy_flag=option.destroy_flag;
+        this.is_down=option.is_down;
+        //飞机爆炸的动画频率
+        this.down_time=0;
+        this.x=parseInt(Math.random()*((canvas.width-this.width)+1));
+        this.y=-this.height;
+        this.index=option.index;
+        this.draw=function(){
+                cnt.drawImage(this.imgs[this.index],this.x,this.y);
+        }
+        this.step=function(){
+           this.y+=2;
+            if(this.y>canvas.height){
+                this.destroy_flag=1
+            }
+        }
+        this.down=function(){
+            this.down_time++;
+            if(this.down_time%5==0)
+                this.index++;
+            if(this.index>this.imgs.length){
+                this.destroy_flag = 1;
+                this.index=0;
+            }
+        }
+    }
+
+    function enemy_animation(){
+        for(var i = 0;i<enemys.length;i++) {
+            if(enemys[i].is_down == 1 && enemys[i].destroy_flag == 0){
+                enemys[i].down();
+                enemys[i].draw();
+                enemys[i].step();
+            }else if(enemys[i].is_down == 0 && enemys[i].destroy_flag == 0) {
+                enemys[i].draw();
+                enemys[i].step();
+            }
+            else if(enemys[i].is_down == 1 && enemys[i].destroy_flag == 1){
+                enemys.splice(i,1);
+                i--;
+            }
+        }
+    }
+    //敌机是否被命中的判定
+    var num=0;
+    var sum=4;
+    function is_e_hitted(){
+        for(var i = 0;i<enemys.length;i++){
+            //判定敌机是否被子弹击中
+            for(var j = 0;j<imgs_bullet.length;j++){
+                if(imgs_bullet[j].x>=enemys[i].x && imgs_bullet[j].x<=enemys[i].x+enemys[i].width && imgs_bullet[j].y<=enemys[i].y+enemys[i].height ){
+                    enemys[i].is_down = 1;
+                    num++;
+                    imgs_bullet[j].destroy_flag = 1;
+                }
+            }
+            //判定敌机是否和主机相撞
+
+            if((enemys[i].x+enemys[i].width/2)-(ghreo.x+ghreo.width/2)<(ghreo.width/2+enemys[i].width/2)&&(-((enemys[i].x+enemys[i].width/2)-(ghreo.x+ghreo.width/2))<(ghreo.width/2+enemys[i].width/2)) && (enemys[i].y+enemys[i].height/2)-(ghreo.y+ghreo.height/2)<(ghreo.height/2+enemys[i].height/2)&&(-((enemys[i].y+enemys[i].height/2)-(ghreo.y+ghreo.height/2))<(ghreo.height/2+enemys[i].height/2))){
+                sum--;
+				if(sum==0){
+					 state=GAMEOVER;
+				}
+              //  ghreo.h_down();
+                enemys.splice(i,1);
+
+
+            }
+        }
+    }
+    //敌机出现的频率
+    var times = 0;
+    /**************************************************************/
+    //定时器
+ // var timer = setInterval(
+  setInterval(timer,10);
+    function timer() {
+        bgstart.draw();
+        bgstart.step();
+        switch (state) {
+            case START:
+                cnt.drawImage(logo, 40, 0);
+                break;
+            case STARTTING:
+                gload.draw();
+                gload.step();
+                break;
+            case RUNNING:
+                ghreo.draw();
+                ghreo.step();
+                ghreo.fire(imgs_bullet);
+                gbullet_animate();
+                gbullet_destroy();
+                times++;
+                if( times%50 == 0){
+                    var enemy = new Genemy(genemy);
+                    enemys[enemys.length]=enemy;
+                }
+                if(times%50 == 0){
+                    var gemy=new Genemy(genemy);
+                    gemy.imgs=hitimgs;
+                    gemy.width=69;
+                    gemy.height=95;
+                    enemys[enemys.length]=gemy;
+                }
+                if(times%1000 == 0){
+                    var Ngemy=new Genemy(genemy);
+                    Ngemy.imgs=maximgs;
+                    Ngemy.width=165;
+                    Ngemy.height=261;
+                    enemys[enemys.length]=Ngemy;
+                }
+                enemy_animation();
+                is_e_hitted();
+                break;
+            case PAUSED:
+                cnt.drawImage(nor, 140, 200);
+                break;
+           case GAMEOVER:
+				cnt.fillText("GAMEOVER",200,300);
+				cnt.font("24px '微软雅黑'");
+				cnt.fillStyle="red";
+				
+                break;
+        }
+    };
+</script>
+</html>
