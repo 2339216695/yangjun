@@ -1,0 +1,446 @@
+*{
+    margin: 0 auto;
+    padding: 0px;
+    color: #675c5c;
+    font-family: "宋体";
+}
+ul li,a,p{
+    list-style: none;
+    font-size: 16px;
+    text-decoration: none;
+    font-weight:bold;
+}
+/*导航栏*/
+.leadin{
+    width: 1322px;
+    height: 50px;
+}
+.leadin-left{
+    width: 155px;
+    height: 30px;
+    background: url(../images/iconlist_1.png) no-repeat -869px -99px ;
+    margin: 10px 0 0 152px;
+    float: left;
+}
+.leadin-right{
+    float: left;
+    margin-left: 280px;
+    width: 733px;
+}
+.leadin-right ul li{
+    float: left;
+    width: 80px;
+    height: 30px;
+    text-align: center;
+    margin-top: 15px;
+    transition: 1s all;
+}
+.leadin-right ul li:hover{
+    border-bottom:5px solid red;
+}
+.leadin-right .btn{
+    display: block;
+    margin: 10px  0 0 430px ;
+}
+.leadin-right input{
+    width: 85px;
+    height: 30px;
+    border:0;
+}
+.leadin-right .l-rbtn1{
+    background: url(../images/iconlist_2.png) no-repeat -430px -670px;
+}
+.leadin-right .l-rbtn2{
+    background: url(../images/iconlist_2.png) no-repeat -1656px -535px;
+}
+/*banner栏*/
+.banner{
+    width: 1322px;
+    height:650px ;
+    background:url(../images/bg_1.jpg);
+    overflow: hidden;
+}
+.banner .ban-txt{
+    width: 454px;
+    height: 104px;
+    background: url(../images/iconlist_1.png) no-repeat -870px 4px;
+    margin-top: 116px;
+}
+/*动画*/
+.banner .ban-circle{
+    width: 1322px;
+    height: 200px;
+    margin-top: 100px;
+    position: relative;
+}
+.banner .ban-circle div>div:first-child{
+    float: left;
+    width: 175px;
+    height: 175px;
+    background: url("../images/iconlist_1.png");
+}
+.banner .ban-circle div>div:last-child{
+    float: left;
+    width: 175px;
+    height: 20px;
+    background: url("../images/iconlist_1.png");
+}
+/*第一个圆*/
+.banner .ban-circle div>div:first-child[class="yi"]{
+    position: absolute;
+    z-index: 1;
+    animation: change 2s linear;
+    animation-fill-mode: forwards;
+}
+.banner .ban-circle div>div:last-child[class="y-i"]{
+    position: absolute;
+    background-position: -869px -130px;
+    top: 175px;
+    opacity: 0;
+    z-index: 1;
+    animation: change 2s linear;
+    animation-fill-mode: forwards;
+}
+@-webkit-keyframes change {
+    from{
+        left:-420px;
+        transform: rotate(0deg);
+    }
+    to{
+        left: 325px;
+        transform: rotate(360deg);
+        opacity: 5;
+    }
+}
+/*第二个圆*/
+.banner .ban-circle div>div:first-child[class="er"]{
+    background-position: -174px 0;
+    position: absolute;
+    z-index: 2;
+    animation: change1 2s linear;
+    animation-fill-mode: forwards;
+}
+.banner .ban-circle div>div:last-child[class="e-r"]{
+    position: absolute;
+    background-position: -869px -130px;
+    top: 175px;
+    opacity: 0;
+    animation: change1 2s linear;
+    animation-fill-mode: forwards;
+}
+@-webkit-keyframes change1 {
+    from{
+        left:-420px;
+        transform: rotate(0deg);
+    }
+    to{
+        left:475px;
+        transform: rotate(720deg);
+        opacity: 5;
+    }
+}
+/*第三个圆*/
+.banner .ban-circle div>div:first-child[class="san"]{
+    background-position: -347px 0;
+    position: absolute;
+    z-index: 3;
+    animation: change2 2s linear;
+    animation-fill-mode: forwards;
+}
+.banner .ban-circle div>div:last-child[class="s-n"]{
+    position: absolute;
+    background-position: -869px -130px;
+    top: 175px;
+    opacity: 0;
+    animation: change2 2s linear;
+    animation-fill-mode: forwards;
+}
+@-webkit-keyframes change2 {
+    from{
+        left:-420px;
+        transform: rotate(0deg);
+    }
+    to{
+        left: 625px;
+        transform: rotate(360deg);
+        opacity: 5;
+    }
+}
+/*第四个圆*/
+.banner .ban-circle div>div:first-child[class="si"]{
+    background-position: -522px 0;
+    position: absolute;
+    z-index: 4;
+    animation: change3 2s linear;
+    animation-fill-mode: forwards;
+}
+.banner .ban-circle div>div:last-child[class="s-i"]{
+    position: absolute;
+    background-position: -869px -130px;
+    top: 175px;
+    opacity: 0;
+    animation: change3 2s linear;
+    animation-fill-mode: forwards;
+}
+@-webkit-keyframes change3 {
+    from{
+        left:-420px;
+        transform: rotate(0deg);
+    }
+    to{
+        left: 775px;
+        transform: rotate(360deg);
+        opacity: 5;
+    }
+}
+/*第五个圆*/
+.banner .ban-circle div>div:first-child[class="wu"]{
+    background-position: -696px 0;
+    position: absolute;
+    z-index: 5;
+    animation: change4 2s linear;
+    animation-fill-mode: forwards;
+}
+.banner .ban-circle div>div:last-child[class="w-u"]{
+    position: absolute;
+    background-position: -869px -130px;
+    top: 175px;
+    opacity: 0;
+    animation: change4 2s linear;
+    animation-fill-mode: forwards;
+}
+@-webkit-keyframes change4 {
+    from{
+        left:-420px;
+        transform: rotate(0deg);
+    }
+
+    to{
+        left: 925px;
+        transform: rotate(360deg);
+        opacity: 5;
+    }
+}
+/*内容栏*/
+.content{
+    width: 1322px;
+    height: 700px;
+    text-align: center;
+}
+.content h2{
+    font-size: 36px;
+    color: #575757;
+    margin-top: 80px;
+}
+.content p{
+    width: 900px;
+    height: 100px;
+    margin-top: 20px;
+    line-height:35px;
+    color: #b9b9b9;
+}
+.content .img{
+    width: 700px;
+    height: 294px;
+    margin-top: 30px;
+    background: url("../images/iconlist_2.png") no-repeat -1638px -1px;
+}
+/*一键呼叫*/
+.call{
+    width: 1322px;
+    height: 700px;
+    background:url("../images/bg_2.jpg") no-repeat -302px -300px;
+}
+.call .call-left{
+    width: 510px;
+    height: 300px;
+    margin-left:150px;
+    margin-top: 200px;
+    background:url("../images/iconlist_2.png") no-repeat 0 -100px;
+    float: left;
+}
+.call .call-right{
+    width: 255px;
+    height: 533px;
+    margin-left:50px;
+    margin-top: 150px;
+    float: left;
+    background:url("../images/iconlist_2.png") no-repeat -570px 0px;
+}
+.call .call-right:hover{
+   animation: change5 0.1s infinite;
+}
+@-webkit-keyframes change5 {
+    from{
+       transform: rotate(1deg)
+    }
+    to{
+       transform: rotate(-1deg)
+    }
+}
+/*智能提示*/
+.clew{
+    width: 1322px;
+}
+.clew .bg{
+    width: 962px;
+    height: 589px;
+    background: url("../images/bg_3.jpg") no-repeat;
+    margin-top: 100px;
+}
+/*定位记录*/
+.orientation{
+    width: 1322px;
+    height: 700px;
+    background: url("../images/bg_4.jpg") no-repeat -300px -370px;
+}
+.orientation .orientation-left{
+    width: 260px;
+    height: 530px;
+    background: url("../images/iconlist_2.png") no-repeat -900px -1px;
+    margin-left: 430px;
+    margin-top: 100px;
+    float: left;
+}
+.orientation .orientation-right{
+    float: left;
+    margin-top: 210px;
+    margin-left: 30px;
+}
+.orientation .orientation-right .r-top{
+    width: 239px;
+    height: 84px;
+    margin-left: 0px;
+    background: url("../images/iconlist_2.png") no-repeat -1205px -115px;
+}
+.orientation .orientation-right .r-bottom{
+    width: 446px;
+    height: 150px;
+    margin-top: 20px;
+    background: url("../images/iconlist_2.png") no-repeat -1205px -200px;
+}
+/*功能*/
+.function{
+    width: 1322px;
+    height: 500px;
+}
+.function .center{
+    width: 1000px;
+    height: 450px;
+    margin-top: 150px;
+}
+.function .center .one{
+    width: 320px;
+    height: 80px;
+    margin-left: 0px;
+    float: left;
+    margin-top: 80px;
+
+}
+.function .center .bgi-1{
+    width: 80px;
+    height: 80px;
+    float: left;
+    background: url("../images/iconlist_3.png") no-repeat 0 0;
+}
+.function .center .bgi-1:hover,.bgi-3:hover,.bgi-2:hover,.bgi-4:hover,.bgi-5:hover,.bgi-6:hover{
+    animation: btn 1s linear;
+}
+@-webkit-keyframes btn {
+    from{
+        opacity: 0;
+        transform: rotate(-15deg);
+        transform: rotate3d(1,1,1,0deg);
+        transform: rotateY(0deg);
+    }
+    to{
+       opacity: 5;
+        transform: rotate(15deg);
+        transform: rotate3d(30,33,34,540deg);
+        transform: rotateY(180deg);
+    }
+}
+.function .center .r-1,.r-2,.r-3,.r-4,.r-5,.r-6{
+    width: 230px;
+    height: 80px;
+    float: left;
+    margin-left: 10px;
+}
+.function .center .r-1 h2{
+    color:orange;
+}
+.function .center .r-1 p,.r-2 p,.r-3 p,.r-4 p,.r-5 p,.r-6 p{
+    color: #b9b9b9;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 20px;
+}
+.function .center .bgi-2{
+    background: url("../images/iconlist_3.png") no-repeat -85px 0;
+}
+.function .center .r-2 h2{
+    color: #f05157;
+}
+.function .center .bgi-3{
+    background: url("../images/iconlist_3.png") no-repeat -170px 0;
+}
+.function .center .r-3 h2{
+    color: #49d6f8;
+}
+.function .center .bgi-4{
+    background: url("../images/iconlist_3.png") no-repeat 0px -85px;
+}
+.function .center .r-4 h2{
+    color: #8ada55;
+}
+.function .center .bgi-5{
+    background: url("../images/iconlist_3.png") no-repeat -85px -85px;
+}
+.function .center .r-5 h2{
+    color: #ff9650;
+}
+.function .center .bgi-6{
+    background: url("../images/iconlist_3.png") no-repeat -170px -85px;
+}
+.function .center .r-6 h2{
+    color: #b099fc;
+}
+/*底部导航栏*/
+.foot{
+    width: 1322px;
+    height: 320px;
+    background-color: #363636;
+    text-align: center;
+}
+.foot .ul-1,.ul-2{
+    float: left;
+    margin-left: 70px;
+    margin-top: 100px;
+    line-height: 25px;
+
+}
+.foot .ul-1 li,.ul-2 li{
+    color: #969696;
+}
+.foot .ul-1{
+    margin-left: 300px;
+}
+.foot .ul-1 h2,.ul-2 h2{
+    line-height:50px;
+    color: #969696;
+}
+.foot .ewm{
+    width: 411px;
+    height: 114px;
+    background: url("../images/iconlist_2.png") no-repeat 0 -587px;
+    float: left;
+    margin-left: 50px;
+    margin-top: 110px;
+    margin-bottom: 50px;
+    overflow: hidden;
+}
+.foot .copy {
+    clear: both;
+}
+
+
