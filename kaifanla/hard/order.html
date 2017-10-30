@@ -1,0 +1,33 @@
+<div class="container" style="padding-top: 70px; padding-bottom: 60px" ng-controller="order">
+    <div class="container" style="border:1px solid #e4e4e4; padding: 20px;">
+        <form ng-show="is_show">
+            <div class="form-group">
+                <label for="name">联系人：</label>
+                <input type="text" class="form-control" name="user_name" ng-model="username" id="name" placeholder="联系人" required>
+            </div>
+            <div class="form-group">
+                <label>性别：</label>
+                <div class="radio">
+                    <label  class="radio-inline">
+                        <input type="radio" name="sex" value="1" ng-model="sex">先生
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="sex" value="2" name="sex">女士
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="tel">联系电话：</label>
+                <input type="tel" name="tel" class="form-control" id="tel" ng-model="tel" placeholder="联系电话" pattern="^1[3458][0-9]{9}$">
+            </div>
+            <div class="form-group">
+                <label for="site">送餐地址：</label>
+                <textarea id="site" name="drrs"  ng-model="drrs" class="form-control" rows="10" placeholder="请输入地址" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success btn-block" ng-click="submit()">确定下单</button>
+        </form>
+        <div class="jumbotron alert alert-success" ng-hide="is_show">
+            <p>订餐成功！您的订单编号为：{{oid}}，您可以在<a href="#/myorder">用户中心</a>查看订单状态。</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <title>饿了么APP</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <script src="js/jquery-1.11.3.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/angular-route.js"></script>
+
+</head>
+<body>
+    <div class="container-fluid" ng-app="myapp" ng-controller="ctr">
+        <div  id="nav-bar1" class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                   <a class="navbar-brand">开饭啦</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-bar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="nav-bar">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#/start">首页</a></li>
+                        <li><a href="#/main">菜单</a></li>
+                        <li><a href="#/myorder">我的订单</a></li>
+                        <li><a href="#" class="disabled">订单详情</a></li>
+                        <li><a href="#" class="disabled">其他</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--头部导航栏结束-->
+        <!--内容部分-->
+        <div ng-view></div>
+        <!--内容部分结束-->
+        <!--底部导航栏-->
+        <div class="container-fluid">
+            <div class="navbar navbar-default navbar-fixed-bottom">
+                <ul class="nav-a nav-pills">
+                    <li><a href="#/start" class="glyphicon glyphicon-home"></a></li>
+                    <li><a href="#/myorder" class="glyphicon glyphicon-user"></a></li>
+                    <li><a href="#/main" class="glyphicon glyphicon-list"></a></li>
+                </ul>
+            </div>
+        </div>
+        <!--底部结束-->
+    </div>
+</body>
+<script type="text/javascript">
+  var module=angular.module("myapp",["ng","ngRoute"]);
+  //分配路由地址
+   module.config(function($routeProvider){
+       $routeProvider.when("/start",{
+           templateUrl:"./hard/start.html"
+       }).when("/datail",{
+           templateUrl:"./hard/datail.html"
+       }).when("/main",{
+           templateUrl:"./hard/main.html"
+       }).when("/myorder",{
+           templateUrl:"./hard/myorder.html"
+       }).when("/order",{
+           templateUrl:"./hard/order.html"
+       })
+   });
+
+      //控制器
+      //开饭啦start首页控制器
+    module.controller("ctr",function($scope,$location){
+       $location.path("/start");
+    });
+
+    //start控制器
+      module.controller("start",function($scope,$location){
+          $scope.action=function(){//点击事件，点击跳转到首页
+              $location.path("/main");
+          }
+      });
+
+    var data_did;//定义一个全局变量
+    //main首页控制器
+    module.controller("main",function($scope,$http){
+            $scope.is_hide=true;//定义加载的ng-show和ng-hide的初始值
+            var num=0;//定义一个变量，表示从数据库第几条开始读
+          $http.get("./PHP/main.php?num="+num).success(function(data){
+              $scope.datas=data;
+                //点击加载更多按钮，读取数据，每次三条
+              $scope.load=function(){
+                  num+=3;
+                  $http.get("./PHP/main.php?num="+num).success(function(data){
+                      $scope.datas=$scope.datas.concat(data);
+                      if(data.length<3){//传过来的数组长度是否大于三，大于三继续读取
+                          $scope.is_hide=false;//把加载更多隐藏，显示数据读取完
+                      }
+                  })
+              }
+              //添加点击事件，获取did变量
+              $scope.attain=function(){
+                //  console.log(this.data.name);
+                  data_did=this.data.did;
+              }
+          })
+      });
+
+   // datail页面控制器
+    module.controller("datail",function($scope,$http,$location){
+        $http.get("./PHP/datail.php?did="+data_did).success(function(data){
+          //  console.log(data);
+            $scope.datas=data;
+            //点击我要下单按钮，跳转到下单页面，
+            $scope.form=function(){
+                $location.path("/order");
+            };
+            //点击我再看看按钮，跳转到首页页面
+            $scope.back=function(){
+                $location.path("/main");
+            }
+        })
+    });
+
+    //myorder页面控制器
+    module.controller("myorder",function($scope,$http){
+        $http.get("./PHP/myorder.php").success(function(data){
+            $scope.datas=data;
+            //点击删除按钮，删除当前订单内容
+            $scope.remove=function(btn){
+                $http.get("./PHP/remove.php?oid="+this.data.oid).success(function(data){
+                    $scope.datas=data;
+                })
+                console.log(this.data.oid);
+            }
+        })
+    })
+
+    //order页面的控制器
+    module.controller("order",function($scope,$http){
+        $scope.is_show=true;
+        $scope.submit=function(){
+            $http.get("./PHP/order.php?user_name="+$scope.username+"&sex="+$scope.sex+"&tel="+$scope.tel+"&addr="+$scope.drrs+"&did="+data_did).success(function(data){
+                //阻止提交跳转
+                if($scope.username !=null && $scope.sex !=null && $scope.tel !=null && $scope.drrs !=null){
+                    $scope.is_show=false; 
+					$scope.oid=data;
+                }
+            })
+        }
+    })
+</script>
+</html>

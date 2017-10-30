@@ -1,0 +1,22 @@
+<div class="container" style="padding-top: 100px" ng-controller="datail">
+    <ol class="breadcrumb">
+        <li><a href="#">首页</a></li>
+        <li class="active">详情</li>
+    </ol>
+    <div class="jumbotron">
+        <div class="container-fluid" ng-repeat="data in datas">
+            <h2>【{{data.name}}】</h2>
+            <hr>
+            <div class="container" style="background-color: #f5f5f5; border: 1px solid #e4e4e4;">
+                <p> <img ng-src="img/{{data.img_lg}}" width="100%" class="img-responsive"></p>
+                <p><strong>主要原料：</strong>{{data.material}}</p>
+                <p>{{data.detail}}</p>
+                <p style="color:red">{{data.price | currency:"￥"}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="text-right" style="padding-bottom: 10px; border: 1px solid #e4e4e4; background-color: #f5f5f5; padding-top: 10px; padding-right: 20px; margin-bottom:70px">
+        <button class="btn btn-success" ng-click="form()">我要订餐</button>
+        <button class="btn btn-warning" ng-click="back()">我再看看</button>
+    </div>
+</div>

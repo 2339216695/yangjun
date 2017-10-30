@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/angular.js"></script>
+    <script src="js/angular-route.js"></script>
+</head>
+<body ng-app="myapp" ng-controller="ctrl">
+    <div class="container">
+        <button class="btn btn-success" ng-click="change()">登录/注册</button>
+        <div ng-view></div>
+    </div>
+</body>
+<script type="text/javascript">
+   var moduler = angular.module("myapp",["ng","ngRoute"]);
+    moduler.config(function($routeProvider){
+        $routeProvider.when("/enter/1",{
+            templateUrl:"./item/enroll.html"
+        }).when("/enter/2",{
+            templateUrl:"./item/loading.html"
+        })
+    })
+
+    moduler.controller("ctrl",function($scope,$location){
+       var num=1;
+        $scope.change=function(){
+            num++;
+            if(num>2){
+                num=1;
+                console.log(num);
+            }
+            var path_url="/enter/"+num;
+            $location.path(path_url);
+        }
+   })
+</script>
+</html>
