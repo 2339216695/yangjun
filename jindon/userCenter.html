@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>用户中心</title>
+    <link type="text/css" rel="stylesheet" href="css/userCenter.css"/>
+    <script src="./js/jquery-1.8.3.js"></script>
+   <!-- <script type="text/javascript" src="./js/userCenter.js" charset="utf-8"></script>-->
+   <script>
+        $(function(){
+          /*  $("#playlist dd>a").click(function(){
+                $("#playlist dd>a").removeClass("selected")
+                $(this).addClass("selected");
+            })*/
+             $("#orderLink").click(function(){
+                $("#orderLink").addClass("selected");
+                $("#recordLink").removeClass("selected");
+                $("#lotteryLink").removeClass("selected");
+                $("#orderContent").show();
+                $("#recordContent").hide();
+                $("#lotteryContent").hide();
+            });
+            $("#recordLink").click(function(){
+                $("#orderLink").removeClass("selected");
+                $("#recordLink").addClass("selected");
+                $("#lotteryLink").removeClass("selected");
+                $("#orderContent").hide();
+                $("#recordContent").show();
+                $("#lotteryContent").hide();
+            });
+            $("#lotteryLink").click(function(){
+                $("#orderLink").removeClass("selected");
+                $("#recordLink").removeClass("selected");
+                $("#lotteryLink").addClass("selected");
+                $("#orderContent").hide();
+                $("#recordContent").hide();
+                $("#lotteryContent").show();
+            });
+           // $("#orderLink").click(function(){
+                $.get("userCenter.php",function(data){
+                    var table=$("table");
+                    $.each(data,function(index,dom){
+                         var tr='<tr class="t2"><td colspan="6">订单号：'+dom.order_num+'<a href="#">'+dom.shop_name+'</a></td> </tr>'+
+                    '<tr class="t3"><td><div><img src="'+dom.product_img+'"/></div></td><td>'+dom.user_name+'</td><td>'+dom.price+'<br/>'+dom.payment_mode+'</td><td>'+dom.submit_time+'</td><td>已完成</td><td><a href="#">查看</a>|<a href="#">删除</a><br/><a href="#">评价晒单</a><br/><a href="#">还要买</a></td></tr>'; 
+                    table.append(tr);
+                    $("#recordCvs").append(tr);
+                    })
+                   
+                },"json")
+           // })
+        })  
+   </script>
+</head>
+<body>
+    <div class="top">
+        <div class="head">
+            <div class="left"></div>
+            <div class="middle">
+                <div>我的京东</div>
+                <div class="bottom"><a href="./index.html">返回京东首页</a></div></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="center">
+        <div class="content">
+            <div class="left">
+                <h3>我的京东</h3>
+                <ul>
+                    <li><a id="orderLink" href="#" class="selected">我的订单</a></li>
+                    <li><a id="recordLink" href="#">消费记录</a></li>
+                    <li><a id="lotteryLink" href="#">幸运抽奖</a></li>
+                </ul>
+            </div>
+            <div class="right">
+                <div id="orderContent">
+                    <table>
+                        <tr class="t1">
+                            <td class="d1">订单信息</td>
+                            <td class="d2">收货人</td>
+                            <td class="d3">订单金额</td>
+                            <td class="d4">
+                                <select>
+                                    <option>最近三个月</option>
+                                </select>
+                            </td>
+                            <td class="d5">
+                                <select>
+                                    <option>全部状态</option>
+                                </select>
+                            </td>
+                            <td class="d6">操作</td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div id="recordContent">
+                    <div id="recordCvs" width="1200" height="400">
+                        您的浏览器不支持canvas
+                    </div>
+                </div>
+                <div id="lotteryContent">
+                    <canvas id="lotteryCvs" width="600" height="400"></canvas>
+                    <button id="btnLottery">开始抽奖</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="content">
+            <div>
+                <p>网络文化经营许可证京网文[2011]0168-061号Copyright &copy; 2004-2014京东JD.com版权所有</p>
+                <p>京东旗下网站：<a href="#">English Site</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
